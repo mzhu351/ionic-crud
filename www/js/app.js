@@ -28,9 +28,6 @@
         // for form inputs)
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
-        // Don't remove this line unless you know what you are doing. It stops the viewport
-        // from snapping when text inputs are focused. Ionic handles this internally for
-        // a much nicer keyboard experience.
         cordova.plugins.Keyboard.disableScroll(true);
       }
       if(window.StatusBar) {
@@ -39,7 +36,7 @@
     });
   })
 
-  app.controller('QueueController', function($scope, $state, Queue) {
+  app.controller('QueueController', function($scope, $state, $ionicPopup, Queue) {
     $scope.queue = Queue;
 
     // $scope.queue.$loaded(function() {
@@ -62,8 +59,17 @@
     };
 
     $scope.delete = function(person) {
-      console.log('delete');
-      Queue.$remove(person);
+      var confirmPopup = $ionicPopup.confirm({
+        title: 'Delete',
+        template: 'Are you sure that you want to delete?',
+      });
+
+      confirmPopup.then(function(res) {
+        if (res) {
+          Queue.$remove(person);
+        }
+      });
+
     };
 
   });
@@ -81,7 +87,7 @@
     };
   });
 
-  app.controller('EditController', function($scope, $state, Queue) {
+  app.controller('EditController', function($scope, $state, $ionicPopup, Queue) {
 
     var person = Queue.$getRecord($state.params.personId);
     $scope.person = angular.copy(person);
@@ -95,8 +101,16 @@
       $state.go('queue');
     };
     $scope.delete = function() {
-      Queue.$remove(person);
-      $state.go('queue');
+      var confirmPopup = $ionicPopup.confirm({
+        title: 'Delete',
+        template: 'Are you sure that you want to delete?',
+      });
+
+      confirmPopup.then(function(res) {
+        if (res) {
+          Queue.$remove(person);
+        }
+      });
     }
   });
 
