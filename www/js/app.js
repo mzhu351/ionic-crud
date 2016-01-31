@@ -9,8 +9,16 @@
       })
       .state('edit', {
         url: '/edit/:personId',
+        controller: 'EditController',
+        templateUrl: 'templates/edit.html'
+      })
+
+      .state('add', {
+        url: '/add',
+        controller: 'AddController',
         templateUrl: 'templates/edit.html'
       });
+
     $urlRouterProvider.otherwise('/queue');
   });
   app.run(function($ionicPlatform) {
@@ -31,15 +39,35 @@
     });
   })
 
-  app.controller('QueueController', function($scope, queueService) {
+  app.controller('QueueController', function($scope, $state, queueService) {
     $scope.queue = queueService.getPeople();
+    $scope.add = function() {
+      $state.go('add');
+    }
   });
 
-  app.controller('EditController', function($scope, $state) {
+  app.controller('AddController', function($scope, $state, queueService){
+    $scope.person = {
+      name: '',
+      status: 'waiting in queue'
+    };
+
     $scope.save = function() {
+      queueService.addPerson($scope.person);
+      $state.go('queue');
+    }
+  });
+
+  app.controller('EditController', function($scope, $state, queueService) {
+
+    $scope.person = angular.copy(queueService.getPerson($state.params.personId));
+
+    $scope.save = function() {
+      queueService.updatePerson($scope.person);
       $state.go('queue');
     };
     $scope.delete = function() {
+      queueService.deletePerson($scope.person.id)
       $state.go('queue');
     }
   });

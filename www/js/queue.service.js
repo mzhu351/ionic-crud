@@ -3,8 +3,6 @@
 
 	app.factory('queueService', function() {
 console.log('svc called');
-		var searchValue,
-				index = -1;
 
 		var people = [
 	    {
@@ -16,11 +14,16 @@ console.log('svc called');
 	      id: '2',
 	      name: 'Jon Burt',
 	      status: 'Waiting in queue'
+	    },
+			{
+	      id: '3',
+	      name: 'Min Zhu',
+	      status: 'Waiting in queue'
 	    }
 		];
 
 		function indexOf(id) {
-			_.findIndex(people, ['id', id]);
+			return _.findIndex(people, ['id', id]);
 		}
 
 		return {
@@ -29,6 +32,7 @@ console.log('svc called');
 			},
 
 			getPerson: function(id) {
+				console.log('getPerson', people[indexOf(id)]);
 				return people[indexOf(id)];
 			},
 
@@ -39,6 +43,11 @@ console.log('svc called');
 			deletePerson: function(id) {
 				var i = indexOf(id);
 				people.splice(i, 1);
+			},
+
+			addPerson: function(person) {
+				person.id = person.length + 1 + '';
+				people.push(person);
 			}
 		}
 
