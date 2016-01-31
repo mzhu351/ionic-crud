@@ -1,5 +1,5 @@
 (function() {
-  var app = angular.module('queup', ['ionic', 'angularMoment', 'firebase'])
+  var app = angular.module('queup', ['ionic', 'angularMoment', 'firebase', 'uiGmapgoogle-maps'])
 
   app.config(function($stateProvider, $urlRouterProvider){
     $stateProvider
@@ -17,6 +17,12 @@
         url: '/add',
         controller: 'AddController',
         templateUrl: 'templates/edit.html'
+      })
+
+      .state('map', {
+        url: '/map',
+        controller: 'MapController',
+        templateUrl: 'templates/map.html'
       });
 
     $urlRouterProvider.otherwise('/queue');
@@ -39,20 +45,22 @@
   app.controller('QueueController', function($scope, $state, $ionicPopup, Queue) {
     $scope.queue = Queue;
 
-    // $scope.queue.$loaded(function() {
-    //   if($scope.queue.length === 0) {
-    //     $scope.queue.$add({
-    //       name: 'Min Zhu',
-    //       status: 'Added to queue',
-    //       updatedTime: Firebase.ServerValue.TIMESTAMP
-    //     });
-    //     $scope.queue.$add({
-    //       name: 'David Cai',
-    //       status: 'Added to queue',
-    //       updatedTime: Firebase.ServerValue.TIMESTAMP
-    //     });
-    //   }
-    // });
+    $scope.queue.$loaded(function() {
+      if($scope.queue.length === 0) {
+        $scope.queue.$add({
+          name: 'Min Zhu',
+          status: 'Added to queue',
+          updatedTime: Firebase.ServerValue.TIMESTAMP,
+          address: '9129 Northfield Road, Ellicott City, MD 21042'
+        });
+        $scope.queue.$add({
+          name: 'David Cai',
+          status: 'Added to queue',
+          updatedTime: Firebase.ServerValue.TIMESTAMP,
+          address: '7950 Red Barn Way, Elkridge, MD 21075'
+        });
+      }
+    });
 
     $scope.add = function() {
       $state.go('add');
@@ -112,6 +120,10 @@
         }
       });
     }
+  });
+
+  app.controller('MapController', function($scope) {
+    $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
   });
 
 })();
