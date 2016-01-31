@@ -62,7 +62,6 @@
     };
 
     $scope.delete = function(person) {
-      //queueService.deletePerson(personId);
       console.log('delete');
       Queue.$remove(person);
     };
@@ -86,16 +85,17 @@
 
     var person = Queue.$getRecord($state.params.personId);
     $scope.person = angular.copy(person);
+    console.log('person',person);
 
     $scope.save = function() {
       person.name = $scope.person.name;
-      person.status = $state.person.status;
+      person.status = $scope.person.status;
       person.updatedTime = Firebase.ServerValue.TIMESTAMP;
       Queue.$save(person);
       $state.go('queue');
     };
     $scope.delete = function() {
-      //queueService.deletePerson($scope.person.id)
+      Queue.$remove(person);
       $state.go('queue');
     }
   });
