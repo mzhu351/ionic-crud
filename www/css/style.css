@@ -1,5 +1,5 @@
 /* Below is for google maps */
-map {
+.map {
 	display:block;
 	width: 100%;
 	height: 100%;
@@ -9,7 +9,7 @@ map {
 	height: 100%;
 }
 
-.angular-google-map-contrainer {
+.angular-google-map-container {
 	display: block;
 	width: 100%;
 	height: 100%;
