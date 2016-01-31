@@ -39,41 +39,65 @@
     });
   })
 
-  app.controller('QueueController', function($scope, $state, queueService) {
-    $scope.queue = queueService.getPeople();
+  app.controller('QueueController', function($scope, $state, Queue) {
+    $scope.queue = Queue;
+
+    // $scope.queue.$loaded(function() {
+    //   if($scope.queue.length === 0) {
+    //     $scope.queue.$add({
+    //       name: 'Min Zhu',
+    //       status: 'Added to queue',
+    //       updatedTime: Firebase.ServerValue.TIMESTAMP
+    //     });
+    //     $scope.queue.$add({
+    //       name: 'David Cai',
+    //       status: 'Added to queue',
+    //       updatedTime: Firebase.ServerValue.TIMESTAMP
+    //     });
+    //   }
+    // });
 
     $scope.add = function() {
       $state.go('add');
     };
 
-    $scope.delete = function(personId) {
-      queueService.deletePerson(personId);
+    $scope.delete = function(person) {
+      //queueService.deletePerson(personId);
+      console.log('delete');
+      Queue.$remove(person);
     };
 
   });
 
-  app.controller('AddController', function($scope, $state, queueService){
+  app.controller('AddController', function($scope, $state, Queue){
     $scope.person = {
       name: '',
       status: 'waiting in queue'
     };
 
     $scope.save = function() {
-      queueService.addPerson($scope.person);
+      $scope.person.updatedTime = Firebase.ServerValue.TIMESTAMP;
+      Queue.$add($scope.person);
+      console.log('saved', $scope.person);
       $state.go('queue');
-    }
+    };
   });
 
-  app.controller('EditController', function($scope, $state, queueService) {
+  app.controller('EditController', function($scope, $state, Queue) {
 
-    $scope.person = angular.copy(queueService.getPerson($state.params.personId));
+    $scope.person = {
+      name: '',
+      status: 'waiting in queue'
+    };
 
     $scope.save = function() {
-      queueService.updatePerson($scope.person);
+      $scope.person.updatedTime = Firebase.ServerValue.TIMESTAMP;
+      Queue.$add($scope.person);
+      console.log('saved', $scope.person);
       $state.go('queue');
     };
     $scope.delete = function() {
-      queueService.deletePerson($scope.person.id)
+      //queueService.deletePerson($scope.person.id)
       $state.go('queue');
     }
   });
