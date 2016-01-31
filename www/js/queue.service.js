@@ -2,25 +2,6 @@
 	var app = angular.module('queup');
 
 	app.factory('queueService', function() {
-console.log('svc called');
-
-		var people = [
-	    {
-	      id: '1',
-	      name: 'David Cai',
-	      status: 'Waiting in queue'
-	    },
-	    {
-	      id: '2',
-	      name: 'Jon Burt',
-	      status: 'Waiting in queue'
-	    },
-			{
-	      id: '3',
-	      name: 'Min Zhu',
-	      status: 'Waiting in queue'
-	    }
-		];
 
 		function indexOf(id) {
 			return _.findIndex(people, ['id', id]);
@@ -32,11 +13,11 @@ console.log('svc called');
 			},
 
 			getPerson: function(id) {
-				console.log('getPerson', people[indexOf(id)]);
 				return people[indexOf(id)];
 			},
 
 			updatePerson: function(person) {
+				person.updatedTime = moment();
 				people[indexOf(person.id)] = person;
 			},
 
@@ -46,6 +27,7 @@ console.log('svc called');
 			},
 
 			addPerson: function(person) {
+				person.updatedTime = moment();
 				person.id = person.length + 1 + '';
 				people.push(person);
 			}

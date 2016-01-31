@@ -1,5 +1,5 @@
 (function() {
-  var app = angular.module('queup', ['ionic'])
+  var app = angular.module('queup', ['ionic', 'angularMoment', 'firebase'])
 
   app.config(function($stateProvider, $urlRouterProvider){
     $stateProvider
@@ -41,9 +41,15 @@
 
   app.controller('QueueController', function($scope, $state, queueService) {
     $scope.queue = queueService.getPeople();
+
     $scope.add = function() {
       $state.go('add');
-    }
+    };
+
+    $scope.delete = function(personId) {
+      queueService.deletePerson(personId);
+    };
+
   });
 
   app.controller('AddController', function($scope, $state, queueService){
