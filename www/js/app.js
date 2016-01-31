@@ -5,24 +5,47 @@
     $stateProvider
       .state('queue', {
         url: '/queue',
-        templateUrl: 'templates/queue.html'
+        views: {
+          'main': {
+            templateUrl: 'templates/queue.html'
+          },
+          'chat': {
+            templateUrl: 'templates/chat.html'
+          }
+        }
+
       })
       .state('edit', {
         url: '/edit/:personId',
-        controller: 'EditController',
-        templateUrl: 'templates/edit.html'
+        views: {
+          'main': {
+            controller: 'EditController',
+            templateUrl: 'templates/edit.html'
+          }
+        }
+
       })
 
       .state('add', {
         url: '/add',
-        controller: 'AddController',
-        templateUrl: 'templates/edit.html'
+        views: {
+          'main': {
+            controller: 'AddController',
+            templateUrl: 'templates/edit.html'
+          }
+        }
+
       })
 
       .state('map', {
         url: '/map',
-        controller: 'MapController',
-        templateUrl: 'templates/map.html'
+        views: {
+          'main': {
+            controller: 'MapController',
+            templateUrl: 'templates/map.html'
+          }
+        }
+
       });
 
     $urlRouterProvider.otherwise('/queue');
