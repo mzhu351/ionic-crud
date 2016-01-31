@@ -78,22 +78,20 @@
     $scope.save = function() {
       $scope.person.updatedTime = Firebase.ServerValue.TIMESTAMP;
       Queue.$add($scope.person);
-      console.log('saved', $scope.person);
       $state.go('queue');
     };
   });
 
   app.controller('EditController', function($scope, $state, Queue) {
 
-    $scope.person = {
-      name: '',
-      status: 'waiting in queue'
-    };
+    var person = Queue.$getRecord($state.params.personId);
+    $scope.person = angular.copy(person);
 
     $scope.save = function() {
-      $scope.person.updatedTime = Firebase.ServerValue.TIMESTAMP;
-      Queue.$add($scope.person);
-      console.log('saved', $scope.person);
+      person.name = $scope.person.name;
+      person.status = $state.person.status;
+      person.updatedTime = Firebase.ServerValue.TIMESTAMP;
+      Queue.$save(person);
       $state.go('queue');
     };
     $scope.delete = function() {
